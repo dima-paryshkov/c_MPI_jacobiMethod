@@ -1,0 +1,24 @@
+Main process start send initial data...
+Proc rank: 0
+Lower proc rank: -1
+Upper proc rank: 1
+x start: 1
+x end:   6
+
+Proc rank: 1
+Lower proc rank: 0
+Upper proc rank: 2
+x start: 7
+x end:   11
+
+Proc rank: 2
+Lower proc rank: 1
+Upper proc rank: -1
+x start: 12
+x end:   16
+
+Main process finish sends initial data.
+Process 0 finish grid initialization.
+Process 1 finish grid initialization.
+Process 2 finish grid initialization.
+Calculation...

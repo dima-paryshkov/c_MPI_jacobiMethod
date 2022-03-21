@@ -1,0 +1,115 @@
+Main process start send initial data...
+Proc rank: 0
+Lower proc rank: -1
+Upper proc rank: 1
+x start: 1
+x end:   1
+
+Proc rank: 1
+Lower proc rank: 0
+Upper proc rank: 2
+x start: 2
+x end:   2
+
+Proc rank: 2
+Lower proc rank: 1
+Upper proc rank: 3
+x start: 3
+x end:   3
+
+Proc rank: 3
+Lower proc rank: 2
+Upper proc rank: 4
+x start: 4
+x end:   4
+
+Proc rank: 4
+Lower proc rank: 3
+Upper proc rank: 5
+x start: 5
+x end:   5
+
+Proc rank: 5
+Lower proc rank: 4
+Upper proc rank: 6
+x start: 6
+x end:   6
+
+Proc rank: 6
+Lower proc rank: 5
+Upper proc rank: 7
+x start: 7
+x end:   7
+
+Proc rank: 7
+Lower proc rank: 6
+Upper proc rank: 8
+x start: 8
+x end:   8
+
+Proc rank: 8
+Lower proc rank: 7
+Upper proc rank: 9
+x start: 9
+x end:   9
+
+Proc rank: 9
+Lower proc rank: 8
+Upper proc rank: 10
+x start: 10
+x end:   10
+
+Proc rank: 10
+Lower proc rank: 9
+Upper proc rank: 11
+x start: 11
+x end:   11
+
+Proc rank: 11
+Lower proc rank: 10
+Upper proc rank: 12
+x start: 12
+x end:   12
+
+Proc rank: 12
+Lower proc rank: 11
+Upper proc rank: 13
+x start: 13
+x end:   13
+
+Proc rank: 13
+Lower proc rank: 12
+Upper proc rank: 14
+x start: 14
+x end:   14
+
+Proc rank: 14
+Lower proc rank: 13
+Upper proc rank: 15
+x start: 15
+x end:   15
+
+Proc rank: 15
+Lower proc rank: 14
+Upper proc rank: -1
+x start: 16
+x end:   16
+
+Main process finish sends initial data.
+Process 0 finish grid initialization.
+Process 1 finish grid initialization.
+Process 2 finish grid initialization.
+Process 3 finish grid initialization.
+Process 4 finish grid initialization.
+Process 5 finish grid initialization.
+Process 6 finish grid initialization.
+Process 7 finish grid initialization.
+Process 8 finish grid initialization.
+Process 9 finish grid initialization.
+Process 10 finish grid initialization.
+Process 11 finish grid initialization.
+Process 12 finish grid initialization.
+Process 13 finish grid initialization.
+Process 14 finish grid initialization.
+Process 15 finish grid initialization.
+Calculation...

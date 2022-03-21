@@ -1,0 +1,14 @@
+Main process start send initial data...
+Proc rank: 0
+Lower proc rank: -1
+Upper proc rank: -1
+x start: 1
+x end:   16
+
+Main process finish sends initial data.
+Process 0 finish grid initialization.
+Calculation...
+
+Precsicion: 0.00136171
+
+Calculation time: 28.4431 s.

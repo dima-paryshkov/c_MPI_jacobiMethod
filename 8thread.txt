@@ -1,0 +1,63 @@
+Main process start send initial data...
+Proc rank: 0
+Lower proc rank: -1
+Upper proc rank: 1
+x start: 1
+x end:   2
+
+Proc rank: 1
+Lower proc rank: 0
+Upper proc rank: 2
+x start: 3
+x end:   4
+
+Proc rank: 2
+Lower proc rank: 1
+Upper proc rank: 3
+x start: 5
+x end:   6
+
+Proc rank: 3
+Lower proc rank: 2
+Upper proc rank: 4
+x start: 7
+x end:   8
+
+Proc rank: 4
+Lower proc rank: 3
+Upper proc rank: 5
+x start: 9
+x end:   10
+
+Proc rank: 5
+Lower proc rank: 4
+Upper proc rank: 6
+x start: 11
+x end:   12
+
+Proc rank: 6
+Lower proc rank: 5
+Upper proc rank: 7
+x start: 13
+x end:   14
+
+Proc rank: 7
+Lower proc rank: Main process finish sends initial data.
+6
+Upper proc rank: -1
+x start: 15
+x end:   16
+
+Process 0 finish grid initialization.
+Process 1 finish grid initialization.
+Process 2 finish grid initialization.
+Process 3 finish grid initialization.
+Process 4 finish grid initialization.
+Process 5 finish grid initialization.
+Process 6 finish grid initialization.
+Process 7 finish grid initialization.
+Calculation...
+
+Precsicion: 0.00136171
+
+Calculation time: 11.0635 s.
