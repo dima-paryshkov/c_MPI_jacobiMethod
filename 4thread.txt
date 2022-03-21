@@ -3,33 +3,33 @@ Proc rank: 0
 Lower proc rank: -1
 Upper proc rank: 1
 x start: 1
-x end:   4
+x end:   5
 
 Main process finish sends initial data.
-Process 0Proc rank: 1
+Proc rank: 1
 Lower proc rank: 0
 Upper proc rank: 2
-x start: 5
-x end:   8
+x start: 6
+x end:   10
 
 Proc rank: 2
 Lower proc rank: 1
 Upper proc rank: 3
-x start: 9
-x end:   12
+x start: 11
+x end:   14
 
 Proc rank: 3
 Lower proc rank: 2
 Upper proc rank: -1
-x start: 13
-x end:   16
+x start: 15
+x end:   18
 
- finish grid initialization.
+Process 0 finish grid initialization.
 Process 1 finish grid initialization.
-Process 2 finish grid initialization.
 Calculation...
+Process 2 finish grid initialization.
 Process 3 finish grid initialization.
 
-Precsicion: 0.00136171
+Precsicion: 0.0013615
 
-Calculation time: 13.3301 s.
+Calculation time: 15.2541 s.

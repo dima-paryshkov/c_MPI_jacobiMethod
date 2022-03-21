@@ -3,12 +3,12 @@ Proc rank: 0
 Lower proc rank: -1
 Upper proc rank: -1
 x start: 1
-x end:   16
+x end:   18
 
 Main process finish sends initial data.
 Process 0 finish grid initialization.
 Calculation...
 
-Precsicion: 0.00136171
+Precsicion: 0.0013615
 
-Calculation time: 28.4431 s.
+Calculation time: 31.9628 s.
