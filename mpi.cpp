@@ -42,7 +42,7 @@ const double Dy = yEnd - yStart;
 const double Dz = zEnd - zStart;
 
 // Количество узлов сетки
-const int Nx = 18;
+const int Nx = 20;
 const int Ny = 10;
 const int Nz = 10;
 
@@ -62,7 +62,7 @@ double rho(double phiValue)
 }
 
 // Перевод из координаты сетки в настоящее значение
-double toReal(double start, double step, int bias)
+double cTR(double start, double step, int bias)
 {
     return start + step * bias;
 }
@@ -90,24 +90,24 @@ void initGrid(double ***&grid, int xLength, double xLocalStart)
     double xCurr;
     for (int i = 0; i < xLength; i++)
     {
-        xCurr = toReal(xLocalStart, hx, i);
+        xCurr = cTR(xLocalStart, hx, i);
 
         for (int k = 0; k < Nz; k++)
         {
             // При j = 0
-            grid[i][0][k] = phi(xCurr, yStart, toReal(zStart, hz, k));
+            grid[i][0][k] = phi(xCurr, yStart, cTR(zStart, hz, k));
         }
 
         for (int k = 0; k < Nz; k++)
         {
             // При j = Ny - 1
-            grid[i][Ny - 1][k] = phi(xCurr, yEnd, toReal(zStart, hz, k));
+            grid[i][Ny - 1][k] = phi(xCurr, yEnd, cTR(zStart, hz, k));
         }
 
         double yCurr;
         for (int j = 1; j < Ny - 1; j++)
         {
-            yCurr = toReal(yStart, hy, j);
+            yCurr = cTR(yStart, hy, j);
 
             // При k = 0
             grid[i][j][0] = phi(xCurr, yCurr, zStart);
@@ -140,15 +140,14 @@ double getPrecisionMPI(double ***grid, int xLocalLength, double xLocalStart, int
     // Максимальное значение ошибки данного процесса
     double maxLocalErr = 0.0;
 
+    // вычисления координат узлов с произвольными индексами
     for (int i = 1; i < xLocalLength - 1; i++)
     {
         for (int j = 1; j < Ny - 1; j++)
         {
             for (int k = 1; k < Nz - 1; k++)
             {
-                currErr = abs(grid[i][j][k] -
-                              phi(toReal(xLocalStart, hx, i), toReal(yStart, hy, j), toReal(zStart, hz, k)));
-
+                currErr = abs(grid[i][j][k] - phi(cTR(xLocalStart, hx, i), cTR(yStart, hy, j), cTR(zStart, hz, k)));
                 if (currErr > maxLocalErr)
                 {
                     maxLocalErr = currErr;
@@ -171,6 +170,7 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    // Тип данных MPI_Status - это структура, содержащая следующие поля: MPI_SOURCE (источник), MPI_TAG (метка), MPI_ERROR (ошибка)
     MPI_Status status;
 
     // Значение сходимости для некоторого узла сетки
@@ -548,9 +548,9 @@ int main(int argc, char **argv)
     // (либо это константные значения внешних слоёв, если таковых процессов нет)
     xMyLocalLength += 2;
 
-    // Инициализируем решётку
+    // Инициализируем сетку
     double ***myGrid;
-    initGrid(myGrid, xMyLocalLength, toReal(xStart, hx, xMyLocalStartIndx - 1));
+    initGrid(myGrid, xMyLocalLength, cTR(xStart, hx, xMyLocalStartIndx - 1));
 
     // Если процесс содержит первый внешний слой, где x - const (x = xStart)
     if (myRank == MAIN_PROC_RANK)
@@ -561,7 +561,7 @@ int main(int argc, char **argv)
         {
             for (int k = 1; k < Nz - 1; k++)
             {
-                myGrid[0][j][k] = phi(xStart, toReal(yStart, hy, j), toReal(zStart, hz, k));
+                myGrid[0][j][k] = phi(xStart, cTR(yStart, hy, j), cTR(zStart, hz, k));
             }
         }
     }
@@ -575,7 +575,7 @@ int main(int argc, char **argv)
         {
             for (int k = 1; k < Nz - 1; k++)
             {
-                myGrid[xMyLocalLength - 1][j][k] = phi(xEnd, toReal(yStart, hy, j), toReal(zStart, hz, k));
+                myGrid[xMyLocalLength - 1][j][k] = phi(xEnd, cTR(yStart, hy, j), cTR(zStart, hz, k));
             }
         }
     }
@@ -604,7 +604,7 @@ int main(int argc, char **argv)
     double elapsedTime = endTime - startTime;
 
     // Считаем общую точность
-    double precsision = getPrecisionMPI(myGrid, xMyLocalLength, toReal(xStart, hx, xMyLocalStartIndx - 1), MAIN_PROC_RANK);
+    double precsision = getPrecisionMPI(myGrid, xMyLocalLength, cTR(xStart, hx, xMyLocalStartIndx - 1), MAIN_PROC_RANK);
     if (myRank == MAIN_PROC_RANK)
     {
         cout << endl
