@@ -167,6 +167,7 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
 {
     int rank;
     int size;
+    MPI_Request reqs[2];
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -265,7 +266,8 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
                 }
             }
             // Отправляем слой младшему процессу
-            MPI_Send((void *)messageBuf, messageLength, MPI_DOUBLE, lowerProcRank, UPPER_BOUND_TAG, MPI_COMM_WORLD);
+            // MPI_Send((void *)messageBuf, messageLength, MPI_DOUBLE, lowerProcRank, UPPER_BOUND_TAG, MPI_COMM_WORLD);
+            MPI_Isend((void *)messageBuf, messageLength, MPI_DOUBLE, lowerProcRank, UPPER_BOUND_TAG, MPI_COMM_WORLD, reqs);
         }
 
         // Если процесс обрабатывает более одного слоя
@@ -311,7 +313,8 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
                 }
             }
             // Отправляем слой старшему процессу
-            MPI_Send((void *)messageBuf, messageLength, MPI_DOUBLE, upperProcRank, LOWER_BOUND_TAG, MPI_COMM_WORLD);
+            //MPI_Send((void *)messageBuf, messageLength, MPI_DOUBLE, upperProcRank, LOWER_BOUND_TAG, MPI_COMM_WORLD);
+            MPI_Isend((void *)messageBuf, messageLength, MPI_DOUBLE, upperProcRank, LOWER_BOUND_TAG, MPI_COMM_WORLD, reqs + 1);
         }
 
         for (int i = 2; i < xLocalLength - 2; i++)
@@ -343,6 +346,13 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
                 }
             }
         }
+        
+        if (lowerProcRank != -1)
+            MPI_Wait(&reqs[0], MPI_STATUS_IGNORE);
+        if (upperProcRank != -1)
+            MPI_Wait(&reqs[1], MPI_STATUS_IGNORE);
+
+        // MPI_Waitall(2, reqs, MPI_STATUS_IGNORE);
 
         // Если процесс должен получить слой соседнего процесса для просчёта своего слоя с младшим значением x (не содержит слоя с x = 0)
         if (lowerProcRank != -1)
@@ -384,10 +394,10 @@ void jacobiMPI(double ***&grid1, int xLocalLength, int xLocalStartIndx, int lowe
 
         // Функция MPI_REDUCE объединяет элементы входного буфера каждого процесса в группе, используя операцию MAIN_PROC_RANK , 
         // и возвращает объединенное значение в выходной буфер процесса с номером MPI_COMM_WORLD.
-        MPI_Reduce((void *)&isEpsilonLower, (void *)&loopFlag, 1, MPI_CHAR, MPI_BOR, MAIN_PROC_RANK, MPI_COMM_WORLD);
-
-        // Рассылает сообщение от процесса с рангом MPI_COMM_WORLD всем остальным процессам коммуникатора
-        MPI_Bcast((void *)&loopFlag, 1, MPI_CHAR, MAIN_PROC_RANK, MPI_COMM_WORLD);
+        //MPI_Allreduce((void *)&isEpsilonLower, (void *)&loopFlag, 1, MPI_CHAR, MPI_BOR, MAIN_PROC_RANK, MPI_COMM_WORLD);
+        MPI_Allreduce((void *)&isEpsilonLower, (void *)&loopFlag, 1, MPI_CHAR, MPI_BOR, MPI_COMM_WORLD);
+        // // Рассылает сообщение от процесса с рангом MPI_COMM_WORLD всем остальным процессам коммуникатора
+        // MPI_Bcast((void *)&loopFlag, 1, MPI_CHAR, MAIN_PROC_RANK, MPI_COMM_WORLD);
 
         // Меняем местами указатели на массив-источник и массив-приёмник
         tmpPtr = currentSourcePtr;
